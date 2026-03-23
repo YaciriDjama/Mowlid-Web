@@ -38,26 +38,15 @@
   var interactionPauseMs = 8000;
   var timer = null;
   var resumeTimer = null;
-  var cache = {};
 
   function renderDots() {
     if (!dotsContainer) return;
     dotsContainer.innerHTML = '';
-    slides.forEach(function (slide, idx) {
-      var thumbSrc = '';
-      var img = slide.querySelector('img');
-      if (img) thumbSrc = img.getAttribute('src') || '';
+    slides.forEach(function (_, idx) {
       var dot = document.createElement('button');
       dot.type = 'button';
       dot.className = 'carousel-dot' + (idx === current ? ' active' : '');
       dot.setAttribute('aria-label', 'Go to photo ' + (idx + 1));
-      if (thumbSrc) {
-        var thumb = document.createElement('img');
-        thumb.src = thumbSrc;
-        thumb.alt = '';
-        thumb.loading = 'lazy';
-        dot.appendChild(thumb);
-      }
       dot.addEventListener('click', function () {
         goTo(idx);
         restartAutoplay();
@@ -76,7 +65,6 @@
     dots.forEach(function (dot, idx) {
       dot.classList.toggle('active', idx === current);
     });
-    preloadNearby();
   }
 
   function next() {
@@ -119,23 +107,6 @@
     }, Math.max(interactionPauseMs, delayMs || 0));
   }
 
-  function preloadImage(src) {
-    if (!src || cache[src]) return;
-    var img = new Image();
-    img.decoding = 'async';
-    img.src = src;
-    cache[src] = true;
-  }
-
-  function preloadNearby() {
-    var nextIdx = (current + 1) % slides.length;
-    var prevIdx = (current - 1 + slides.length) % slides.length;
-    var nextImg = slides[nextIdx].querySelector('img');
-    var prevImg = slides[prevIdx].querySelector('img');
-    if (nextImg) preloadImage(nextImg.getAttribute('src'));
-    if (prevImg) preloadImage(prevImg.getAttribute('src'));
-  }
-
   if (prevBtn) prevBtn.addEventListener('click', function () { prev(); pauseThenResume(interactionPauseMs); });
   if (nextBtn) nextBtn.addEventListener('click', function () { next(); pauseThenResume(interactionPauseMs); });
 
@@ -149,6 +120,5 @@
 
   renderDots();
   goTo(0);
-  preloadNearby();
   startAutoplay();
 })();
