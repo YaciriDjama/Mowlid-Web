@@ -4,6 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bright Photo Booth | Events & Parties</title>
+  <script>
+    (function () {
+      if (location.protocol === 'file:') return;
+      try {
+        var u = new URL(location.href);
+        var p = u.pathname;
+        if (p.endsWith('.html')) {
+          u.pathname = p.replace(/[^/]*$/, '');
+        } else if (p !== '/' && !p.endsWith('/')) {
+          u.pathname = p + '/';
+        }
+        var b = document.createElement('base');
+        b.href = u.origin + u.pathname;
+        var before = document.head.querySelector('link[rel="preconnect"]');
+        document.head.insertBefore(b, before || document.head.firstChild);
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -323,9 +341,9 @@
       <p class="footer-brand">Bright Photo Booth</p>
       <p class="footer-contact">
         <a href="mailto:Photoboothbright@gmail.com">Photoboothbright@gmail.com</a>
-        <span class="sep">?</span>
+        <span class="sep">&middot;</span>
         <a href="tel:+16514203713">651-420-3713</a>
-        <span class="sep">?</span>
+        <span class="sep">&middot;</span>
         <a href="https://www.instagram.com/brightphotoboothco/" target="_blank" rel="noopener noreferrer">Instagram</a>
       </p>
       <p class="footer-copy">&copy; <span id="year"></span> Bright Photo Booth. All rights reserved.</p>
