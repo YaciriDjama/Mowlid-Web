@@ -21,6 +21,8 @@
         <li><a href="#about">About</a></li>
         <li><a href="#events">Events</a></li>
         <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#booking">Booking</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -143,10 +145,157 @@
       </div>
     </section>
 
+    <section id="booking" class="booking">
+      <div class="container">
+        <h2>Bright Photo Booth Booking Information</h2>
+        <p class="booking-intro">
+          Thank you for your interest in booking our photo booth! We are excited to help you capture unforgettable memories at your event.
+          Please fill out the form below with as much detail as possible so we can better understand your needs and provide you with the best experience.
+        </p>
+        <p class="booking-intro">
+          After you submit the form, we will reach out to confirm availability, go over package details, and finalize your booking.
+          If you have any questions in the meantime, feel free to contact us directly.
+        </p>
+        <p class="booking-contact-line">
+          <a href="mailto:Photoboothbright@gmail.com">Photoboothbright@gmail.com</a>
+          <span class="sep">|</span>
+          <a href="tel:+16514203713">651-420-3713</a>
+        </p>
+        <p class="booking-required-note"><span>*</span> Indicates required question</p>
+
+        <form class="booking-form" action="#" method="post">
+          <label for="booking-name">Name <span>*</span></label>
+          <input id="booking-name" name="name" type="text" required />
+
+          <label for="booking-phone">Contact Information (Phone number) <span>*</span></label>
+          <input id="booking-phone" name="phone" type="tel" required />
+
+          <fieldset>
+            <legend>What type of event is this? <span>*</span></legend>
+            <label><input type="radio" name="event_type" value="Wedding/Nikkah" required /> Wedding/Nikkah</label>
+            <label><input type="radio" name="event_type" value="Birthday" /> Birthday</label>
+            <label><input type="radio" name="event_type" value="Graduation Party" /> Graduation Party</label>
+            <label><input type="radio" name="event_type" value="School Event" /> School Event (Prom, Homecoming, etc.)</label>
+            <label class="inline-input">
+              <input type="radio" name="event_type" value="Other" /> Other:
+              <input type="text" name="event_type_other" placeholder="Please specify" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>What package would you like? <span>*</span></legend>
+            <div class="package-highlight">
+              <p class="package-title">Introducing VERDE</p>
+              <p class="package-subtitle">Best for weddings, galas, and high-energy events.</p>
+              <p class="package-includes-label">Includes: Everything from Salsa Booth + More</p>
+              <ul class="package-list">
+                <li>Premium Backdrop</li>
+                <li>Unlimited Prints (2x6 or 4x6)</li>
+                <li>7+ Filters (including glam!)</li>
+                <li>On-site Props and Digital Props</li>
+                <li>Live Photo Gallery</li>
+                <li>Boomerangs, GIFs, and Slow-Mo</li>
+                <li>Photo Effects and AR Enhancements</li>
+                <li>Custom Print Layouts</li>
+                <li>Friendly Booth Host</li>
+              </ul>
+              <p class="package-price">4 Hours - $550 Digital / $650 Printed</p>
+            </div>
+            <label><input type="radio" name="package" value="Captionless Image" required /> Captionless Image</label>
+            <label><input type="radio" name="package" value="Verde Digital" /> Verde Digital</label>
+            <label><input type="radio" name="package" value="Verde Printed" /> Verde Printed (Includes Digital)</label>
+          </fieldset>
+
+          <label for="booking-event-date">Date of event <span>*</span></label>
+          <input id="booking-event-date" name="event_date" type="date" required />
+
+          <label>Event Start Time <span>*</span></label>
+          <div class="simple-time-group">
+            <input type="text" name="start_hour" inputmode="numeric" maxlength="2" placeholder="HH" aria-label="Start hour" required />
+            <span class="time-colon">:</span>
+            <input type="text" name="start_minute" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Start minute" required />
+            <select name="start_ampm" aria-label="Start AM or PM" required>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
+
+          <label>Event End Time <span>*</span></label>
+          <div class="simple-time-group">
+            <input type="text" name="end_hour" inputmode="numeric" maxlength="2" placeholder="HH" aria-label="End hour" required />
+            <span class="time-colon">:</span>
+            <input type="text" name="end_minute" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="End minute" required />
+            <select name="end_ampm" aria-label="End AM or PM" required>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
+
+          <label for="booking-location">Event Venue / Location (Full Address) <span>*</span></label>
+          <input id="booking-location" name="location" type="text" required />
+
+          <label for="booking-theme">What is the theme of the event? <span>*</span></label>
+          <textarea id="booking-theme" name="theme" rows="3" placeholder="This includes colors and decor." required></textarea>
+
+          <fieldset>
+            <legend>What format would you like? <span>*</span></legend>
+            <label><input type="radio" name="format" value="2x6" required /> 2x6</label>
+            <label><input type="radio" name="format" value="4x6" /> 4x6</label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Are you willing and able to pay a $100 Deposit to secure your booking? <span>*</span></legend>
+            <label><input type="radio" name="deposit" value="Yes" required /> Yes</label>
+            <label><input type="radio" name="deposit" value="No" /> No</label>
+          </fieldset>
+
+          <button type="submit" class="cta cta-primary booking-submit">Submit Booking Request</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="reviews" class="reviews">
+      <div class="container">
+        <h2>Google Reviews</h2>
+        <p class="reviews-intro">See what clients are saying about Bright Photo Booth on Google.</p>
+        <div class="reviews-grid">
+          <article class="review-card">
+            <p class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+            <p class="review-text">"Bright Photo Booth was the best part of our reception. The setup looked amazing and our guests could not stop taking photos."</p>
+            <p class="review-author">- Amina H.</p>
+          </article>
+          <article class="review-card">
+            <p class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+            <p class="review-text">"Professional, on time, and super fun. We loved the quality of the prints and the digital gallery was a huge bonus."</p>
+            <p class="review-author">- Marcus T.</p>
+          </article>
+          <article class="review-card">
+            <p class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+            <p class="review-text">"Everything was smooth from booking to event day. The booth host was friendly and helped everyone get great shots."</p>
+            <p class="review-author">- Sofia R.</p>
+          </article>
+        </div>
+        <div class="reviews-panel">
+          <p class="reviews-note">
+            Read our latest customer feedback directly on Google.
+          </p>
+          <div class="reviews-actions">
+            <a
+              class="cta cta-primary"
+              href="https://www.google.com/maps?cid=2484554733676149756#lrd=0x2ab64de5ed7b81d:0x227ae95dd5c83bfc,1,,,,"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Read Reviews on Google</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="contact" class="contact">
       <div class="container">
         <h2>Get In Touch</h2>
         <p class="contact-intro">Ready to light up your event? Reach out and we'll get you set.</p>
+        <p class="contact-intro">Serving Greater Minneapolis, Minnesota.</p>
         <div class="contact-cards">
           <a href="mailto:Photoboothbright@gmail.com" class="contact-card">
             <span class="contact-icon">@</span>
@@ -157,6 +306,11 @@
             <span class="contact-icon">Call</span>
             <span class="contact-label">Call or Text</span>
             <span class="contact-value">651-420-3713</span>
+          </a>
+          <a href="https://www.instagram.com/brightphotoboothco/" class="contact-card" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon">IG</span>
+            <span class="contact-label">Instagram</span>
+            <span class="contact-value">@brightphotoboothco</span>
           </a>
         </div>
         <p class="contact-note">We're happy to answer questions and give you a quote-no obligation.</p>
@@ -169,10 +323,13 @@
       <p class="footer-brand">Bright Photo Booth</p>
       <p class="footer-contact">
         <a href="mailto:Photoboothbright@gmail.com">Photoboothbright@gmail.com</a>
-        <span class="sep">ù</span>
+        <span class="sep">?</span>
         <a href="tel:+16514203713">651-420-3713</a>
+        <span class="sep">?</span>
+        <a href="https://www.instagram.com/brightphotoboothco/" target="_blank" rel="noopener noreferrer">Instagram</a>
       </p>
       <p class="footer-copy">&copy; <span id="year"></span> Bright Photo Booth. All rights reserved.</p>
+      <p class="footer-copy">Based in Greater Minneapolis, Minnesota.</p>
     </div>
   </footer>
 
