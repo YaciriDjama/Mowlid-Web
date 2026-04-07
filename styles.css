@@ -1066,8 +1066,23 @@ section h2 {
 }
 
 .contact-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.75rem;
+  border-radius: 14px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.22);
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.08);
+  color: var(--neon-cyan);
+}
+
+.contact-icon svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  fill: currentColor;
 }
 
 .contact-label {

@@ -26,12 +26,21 @@
       document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
     });
 
+    function closeMobileNav() {
+      toggle.classList.remove('active');
+      navLinks.classList.remove('active');
+      document.body.style.overflow = '';
+      closeBookDropdown();
+    }
+
     navLinks.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
-        toggle.classList.remove('active');
-        navLinks.classList.remove('active');
-        document.body.style.overflow = '';
-        closeBookDropdown();
+        var href = (link.getAttribute('href') || '').trim();
+        if (/^mailto:/i.test(href) || /^tel:/i.test(href)) {
+          window.setTimeout(closeMobileNav, 150);
+          return;
+        }
+        closeMobileNav();
       });
     });
   }
@@ -57,6 +66,38 @@
       }
     });
   }
+
+  // Force reliable email action for all email links (bottom/footer included)
+  function buildGmailComposeUrl(email) {
+    return 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(email);
+  }
+
+  function openInNewTab(url) {
+    var win = window.open(url, '_blank', 'noopener');
+    if (!win) {
+      // Popup blocked: keep current tab unchanged and notify user.
+      window.alert('Please allow pop-ups for this site to open email in a new tab.');
+    }
+  }
+
+  document.querySelectorAll('a[href^="mailto:"], .js-email-link').forEach(function (emailLink) {
+    emailLink.addEventListener('click', function (e) {
+      var href = (emailLink.getAttribute('href') || '').trim();
+      if (!href) return;
+
+      var mailMatch = href.match(/^mailto:([^?]+)/i);
+      if (mailMatch && mailMatch[1]) {
+        e.preventDefault();
+        openInNewTab(buildGmailComposeUrl(mailMatch[1]));
+        return;
+      }
+
+      if (emailLink.classList.contains('js-email-link')) {
+        e.preventDefault();
+        openInNewTab(href);
+      }
+    });
+  });
 
   function revealBooking() {
     var bookingSection = document.getElementById('booking');
