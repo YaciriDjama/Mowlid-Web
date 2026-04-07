@@ -40,7 +40,39 @@
         <li><a href="#events">Events</a></li>
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#booking">Booking</a></li>
+        <li class="nav-book">
+          <div class="book-dropdown" id="book-dropdown">
+            <button
+              type="button"
+              class="book-dropdown__trigger"
+              id="book-dropdown-btn"
+              aria-expanded="false"
+              aria-controls="book-dropdown-panel"
+            >
+              <span>Book now</span>
+              <span class="book-dropdown__chevron" aria-hidden="true"></span>
+            </button>
+            <div
+              class="book-dropdown__panel"
+              id="book-dropdown-panel"
+              role="region"
+              aria-labelledby="book-dropdown-btn"
+              aria-hidden="true"
+            >
+              <div class="book-dropdown__surface">
+                <p class="book-dropdown__kicker">Get on the calendar</p>
+                <p class="book-dropdown__title">Book your event</p>
+                <a href="#booking" class="book-dropdown__cta">Open booking form</a>
+                <div class="book-dropdown__divider" aria-hidden="true"></div>
+                <div class="book-dropdown__contacts">
+                  <a href="mailto:Photoboothbright@gmail.com" class="book-dropdown__mini">Email</a>
+                  <a href="tel:+16514203713" class="book-dropdown__mini">Call / text</a>
+                </div>
+                <p class="book-dropdown__fine">$100 deposit secures your date — details in the form.</p>
+              </div>
+            </div>
+          </div>
+        </li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -61,7 +93,7 @@
           <h1>Capture the<br /><span class="highlight">Bright</span> Moments</h1>
           <p class="hero-desc">Weddings, birthdays, corporate events, graduations, baby showers, holiday parties & more-we bring the booth, the props, and the prints. You bring the smiles.</p>
           <div class="hero-ctas">
-            <a href="#contact" class="cta cta-primary">Book Your Event</a>
+            <a href="#booking" class="cta cta-primary">Book Your Event</a>
             <a href="#gallery" class="cta cta-secondary">See the Fun</a>
           </div>
         </div>
@@ -163,7 +195,7 @@
       </div>
     </section>
 
-    <section id="booking" class="booking">
+    <section id="booking" class="booking" hidden>
       <div class="container">
         <h2>Bright Photo Booth Booking Information</h2>
         <p class="booking-intro">
@@ -182,6 +214,8 @@
         <p class="booking-required-note"><span>*</span> Indicates required question</p>
 
         <form class="booking-form" action="#" method="post">
+          <input type="hidden" name="promo_15_window" id="promo-booking-meta" value="" />
+          <input type="hidden" name="promo_deadline_utc" id="promo-deadline-meta" value="" />
           <label for="booking-name">Name <span>*</span></label>
           <input id="booking-name" name="name" type="text" required />
 
@@ -350,6 +384,48 @@
       <p class="footer-copy">Based in Greater Minneapolis, Minnesota.</p>
     </div>
   </footer>
+
+  <div
+    id="promo-modal"
+    class="promo-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="promo-title"
+    aria-describedby="promo-desc"
+    hidden
+  >
+    <div class="promo-modal__backdrop" data-promo-close tabindex="-1"></div>
+    <div class="promo-modal__panel">
+      <button type="button" class="promo-modal__close" aria-label="Close promotion" data-promo-close>&times;</button>
+      <p class="promo-modal__eyebrow">Limited-time offer</p>
+      <h2 id="promo-title" class="promo-modal__title">Book within 30 minutes</h2>
+      <p class="promo-modal__discount" aria-hidden="true">15% off</p>
+      <p class="promo-modal__timer-wrap">
+        <span class="promo-modal__timer-label">Time left to claim</span>
+        <span id="promo-timer" class="promo-modal__timer" aria-live="polite">30:00</span>
+      </p>
+      <p id="promo-expired" class="promo-modal__expired" hidden>
+        This 30-minute window has ended. You can still book — mention the offer in your message and we will confirm what applies.
+      </p>
+      <p id="promo-desc" class="promo-modal__text">
+        Submit your booking request before the timer ends and mention this offer — save 15% on your package.
+      </p>
+      <a href="#booking" class="cta cta-primary promo-modal__cta" data-promo-close>Book now</a>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    id="promo-fab"
+    class="promo-fab"
+    hidden
+    aria-label="Open limited-time 15% booking offer"
+    aria-controls="promo-modal"
+    aria-haspopup="dialog"
+  >
+    <span class="promo-fab__badge">15% off</span>
+    <span class="promo-fab__hint">Book in 30 min</span>
+  </button>
 
   <script src="script.js"></script>
 </body>

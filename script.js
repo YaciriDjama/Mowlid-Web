@@ -8,6 +8,17 @@
   // Mobile nav toggle
   var toggle = document.querySelector('.nav-toggle');
   var navLinks = document.querySelector('.nav-links');
+  var bookDropdown = document.getElementById('book-dropdown');
+  var bookBtn = document.getElementById('book-dropdown-btn');
+  var bookPanel = document.getElementById('book-dropdown-panel');
+
+  function closeBookDropdown() {
+    if (!bookDropdown || !bookBtn || !bookPanel) return;
+    bookDropdown.classList.remove('is-open');
+    bookBtn.setAttribute('aria-expanded', 'false');
+    bookPanel.setAttribute('aria-hidden', 'true');
+  }
+
   if (toggle && navLinks) {
     toggle.addEventListener('click', function () {
       toggle.classList.toggle('active');
@@ -20,7 +31,245 @@
         toggle.classList.remove('active');
         navLinks.classList.remove('active');
         document.body.style.overflow = '';
+        closeBookDropdown();
       });
+    });
+  }
+
+  if (bookDropdown && bookBtn && bookPanel) {
+    bookBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !bookDropdown.classList.contains('is-open');
+      bookDropdown.classList.toggle('is-open', open);
+      bookBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      bookPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (bookDropdown.contains(e.target)) return;
+      closeBookDropdown();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && bookDropdown.classList.contains('is-open')) {
+        closeBookDropdown();
+        bookBtn.focus();
+      }
+    });
+  }
+
+  function revealBooking() {
+    var bookingSection = document.getElementById('booking');
+    if (!bookingSection) return;
+    bookingSection.removeAttribute('hidden');
+  }
+
+  function scrollToBooking() {
+    var el = document.getElementById('booking');
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function initBookingReveal() {
+    var bookingSection = document.getElementById('booking');
+    if (!bookingSection) return;
+
+    if (window.location.hash === '#booking') {
+      revealBooking();
+    }
+
+    document.querySelectorAll('a[href="#booking"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        revealBooking();
+        if (window.history.replaceState) {
+          window.history.replaceState(null, '', '#booking');
+        } else {
+          window.location.hash = 'booking';
+        }
+        window.requestAnimationFrame(function () {
+          scrollToBooking();
+        });
+      });
+    });
+
+    window.addEventListener('hashchange', function () {
+      if (window.location.hash === '#booking') {
+        revealBooking();
+        window.requestAnimationFrame(scrollToBooking);
+      }
+    });
+  }
+
+  initBookingReveal();
+
+  // Limited-time promo: one deadline per browser session (sessionStorage), does not reset on reopen
+  var PROMO_STORAGE_KEY = 'brightPromo15Dismissed';
+  var PROMO_DEADLINE_KEY = 'brightPromo15DeadlineMs';
+  var PROMO_WINDOW_MS = 30 * 60 * 1000;
+  var promoModal = document.getElementById('promo-modal');
+  var promoFab = document.getElementById('promo-fab');
+  var promoTimerEl = document.getElementById('promo-timer');
+  var promoTimerInterval = null;
+  var promoDeadline = 0;
+
+  function readDeadlineFromStorage() {
+    try {
+      var s = sessionStorage.getItem(PROMO_DEADLINE_KEY);
+      if (!s) return null;
+      var t = parseInt(s, 10);
+      return isNaN(t) ? null : t;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getOrCreateDeadline() {
+    var existing = readDeadlineFromStorage();
+    if (existing !== null) return existing;
+    var d = Date.now() + PROMO_WINDOW_MS;
+    try {
+      sessionStorage.setItem(PROMO_DEADLINE_KEY, String(d));
+    } catch (e) {}
+    return d;
+  }
+
+  function showPromoFab() {
+    if (!promoFab) return;
+    promoFab.removeAttribute('hidden');
+    updatePromoFabAppearance();
+  }
+
+  function hidePromoFab() {
+    if (!promoFab) return;
+    promoFab.setAttribute('hidden', '');
+  }
+
+  function updatePromoFabAppearance() {
+    if (!promoFab) return;
+    var d = readDeadlineFromStorage();
+    if (d === null) return;
+    var active = Date.now() <= d;
+    promoFab.classList.toggle('promo-fab--expired', !active);
+    var hint = promoFab.querySelector('.promo-fab__hint');
+    var badge = promoFab.querySelector('.promo-fab__badge');
+    if (hint && badge) {
+      if (active) {
+        badge.textContent = '15% off';
+        hint.textContent = 'Book in 30 min';
+      } else {
+        badge.textContent = 'Offer ended';
+        hint.textContent = 'Tap for details';
+      }
+    }
+  }
+
+  function updatePromoModalExpiredState() {
+    if (!promoModal) return;
+    var expired = Date.now() > promoDeadline;
+    var panel = promoModal.querySelector('.promo-modal__panel');
+    var expiredEl = document.getElementById('promo-expired');
+    var desc = document.getElementById('promo-desc');
+    if (panel) panel.classList.toggle('promo-modal__panel--expired', expired);
+    if (expiredEl) expiredEl.hidden = !expired;
+    if (desc) desc.hidden = expired;
+  }
+
+  function promoBodyOverflow() {
+    var navOpen = navLinks && navLinks.classList.contains('active');
+    document.body.style.overflow = navOpen ? 'hidden' : '';
+  }
+
+  function stopPromoTimer() {
+    if (promoTimerInterval) {
+      window.clearInterval(promoTimerInterval);
+      promoTimerInterval = null;
+    }
+  }
+
+  function tickPromoTimer() {
+    if (!promoTimerEl || !promoModal || promoModal.hasAttribute('hidden')) return;
+    var left = Math.max(0, promoDeadline - Date.now());
+    var m = Math.floor(left / 60000);
+    var s = Math.floor((left % 60000) / 1000);
+    promoTimerEl.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    updatePromoModalExpiredState();
+    if (left <= 0) stopPromoTimer();
+  }
+
+  function startPromoTimer() {
+    stopPromoTimer();
+    promoDeadline = getOrCreateDeadline();
+    tickPromoTimer();
+    promoTimerInterval = window.setInterval(tickPromoTimer, 1000);
+  }
+
+  function openPromoModal() {
+    if (!promoModal) return;
+    hidePromoFab();
+    promoModal.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+    startPromoTimer();
+    var closeBtn = promoModal.querySelector('.promo-modal__close');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closePromoModal() {
+    if (!promoModal) return;
+    promoModal.setAttribute('hidden', '');
+    try {
+      sessionStorage.setItem(PROMO_STORAGE_KEY, '1');
+    } catch (e) {}
+    stopPromoTimer();
+    promoBodyOverflow();
+    showPromoFab();
+    if (promoFab) promoFab.focus();
+  }
+
+  if (promoModal) {
+    try {
+      if (!sessionStorage.getItem(PROMO_STORAGE_KEY)) {
+        window.setTimeout(openPromoModal, 450);
+      } else {
+        showPromoFab();
+      }
+    } catch (e) {
+      window.setTimeout(openPromoModal, 450);
+    }
+
+    if (promoFab) {
+      promoFab.addEventListener('click', function () {
+        openPromoModal();
+      });
+    }
+
+    promoModal.querySelectorAll('[data-promo-close]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        closePromoModal();
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && promoModal && !promoModal.hasAttribute('hidden')) {
+        closePromoModal();
+      }
+    });
+  }
+
+  var bookingForm = document.querySelector('.booking-form');
+  if (bookingForm) {
+    bookingForm.addEventListener('submit', function () {
+      var meta = document.getElementById('promo-booking-meta');
+      var deadlineMeta = document.getElementById('promo-deadline-meta');
+      var d = readDeadlineFromStorage();
+      var within = d !== null && Date.now() <= d;
+      if (meta) meta.value = within ? 'yes' : 'no';
+      if (deadlineMeta) deadlineMeta.value = d !== null ? new Date(d).toISOString() : '';
+      if (within) {
+        try {
+          sessionStorage.setItem('brightPromo15SubmittedInWindow', String(Date.now()));
+        } catch (e2) {}
+      }
     });
   }
 
