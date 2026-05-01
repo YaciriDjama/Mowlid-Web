@@ -299,8 +299,26 @@
 
   var bookingForm = document.querySelector('.booking-form');
   if (bookingForm) {
+    function setBookingStatus(statusEl, message, isError) {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.classList.toggle('booking-status--error', !!isError);
+    }
+
+    function setBookingStatusHtml(statusEl, html, isError) {
+      if (!statusEl) return;
+      statusEl.innerHTML = html;
+      statusEl.classList.toggle('booking-status--error', !!isError);
+    }
+
     function submitBooking(endpoint, formData) {
-      return fetch(endpoint, {
+      var timeoutMs = 12000;
+      var timeoutPromise = new Promise(function (_, reject) {
+        window.setTimeout(function () {
+          reject(new Error('Submit timed out'));
+        }, timeoutMs);
+      });
+      var requestPromise = fetch(endpoint, {
         method: 'POST',
         body: formData,
         headers: {
@@ -311,6 +329,7 @@
           return { success: false };
         });
       });
+      return Promise.race([requestPromise, timeoutPromise]);
     }
 
     function buildMailtoFallbackUrl(formData, email) {
@@ -323,15 +342,21 @@
       return 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     }
 
+    bookingForm.addEventListener('invalid', function () {
+      var statusEl = document.getElementById('booking-status');
+      setBookingStatus(statusEl, 'Please complete all required fields before submitting.', true);
+    }, true);
+
     bookingForm.addEventListener('submit', function (event) {
       event.preventDefault();
       var meta = document.getElementById('promo-booking-meta');
       var deadlineMeta = document.getElementById('promo-deadline-meta');
       var statusEl = document.getElementById('booking-status');
       var submitBtn = bookingForm.querySelector('.booking-submit');
-      var primaryEndpoint = bookingForm.getAttribute('action') || '';
+      var primaryEndpoint = (bookingForm.getAttribute('data-primary-endpoint') || bookingForm.getAttribute('action') || '').trim();
       var fallbackEndpoint = (bookingForm.getAttribute('data-fallback-endpoint') || '').trim();
       var fallbackEmail = (bookingForm.getAttribute('data-fallback-email') || '').trim();
+      var hasPrimaryEndpoint = !!primaryEndpoint && !/YOUR_|REPLACE_ME|REPLACE_WITH/i.test(primaryEndpoint);
       var hasFallbackEndpoint = !!fallbackEndpoint && !/YOUR_|REPLACE_ME/i.test(fallbackEndpoint);
       var d = readDeadlineFromStorage();
       var within = d !== null && Date.now() <= d;
@@ -344,19 +369,33 @@
       }
 
       var formData = new FormData(bookingForm);
-      if (statusEl) {
-        statusEl.textContent = 'Sending your booking request...';
-      }
+      setBookingStatus(statusEl, 'Sending your booking request...', false);
       if (submitBtn) {
         submitBtn.disabled = true;
+      }
+
+      if (!hasPrimaryEndpoint) {
+        if (fallbackEmail) {
+          var configFallbackUrl = buildMailtoFallbackUrl(formData, fallbackEmail);
+          setBookingStatusHtml(
+            statusEl,
+            'Online booking endpoint is not configured yet. <a href="' + configFallbackUrl + '">Tap here to email your booking details now</a>.',
+            true
+          );
+          window.location.href = configFallbackUrl;
+        } else {
+          setBookingStatus(statusEl, 'Online booking endpoint is not configured yet.', true);
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+        }
+        return;
       }
 
       submitBooking(primaryEndpoint, formData)
         .then(function (res) {
           if (res && res.success) {
-            if (statusEl) {
-              statusEl.textContent = 'Thanks! Your booking request was sent. We will contact you soon.';
-            }
+            setBookingStatus(statusEl, 'Thanks! Your booking request was sent. We will contact you soon.', false);
             bookingForm.reset();
             return;
           }
@@ -364,14 +403,10 @@
         })
         .catch(function () {
           if (!hasFallbackEndpoint) throw new Error('No fallback endpoint');
-          if (statusEl) {
-            statusEl.textContent = 'Primary submit unavailable. Retrying with backup...';
-          }
+          setBookingStatus(statusEl, 'Primary submit unavailable. Retrying with backup...', true);
           return submitBooking(fallbackEndpoint, formData).then(function (res) {
             if (res && res.success) {
-              if (statusEl) {
-                statusEl.textContent = 'Sent through backup form service. We will contact you soon.';
-              }
+              setBookingStatus(statusEl, 'Sent through backup form service. We will contact you soon.', false);
               bookingForm.reset();
               return;
             }
@@ -382,13 +417,17 @@
           if (fallbackEmail) {
             var fallbackUrl = buildMailtoFallbackUrl(formData, fallbackEmail);
             window.location.href = fallbackUrl;
-            if (statusEl) {
-              statusEl.textContent =
-                'We opened your email app with your booking details. Please send the email to complete your request.';
-            }
-          } else if (statusEl) {
-            statusEl.textContent =
-              'We could not submit right now. Please email Photoboothbright@gmail.com or call/text 651-420-3713.';
+            setBookingStatusHtml(
+              statusEl,
+              'Could not reach the form service. If your email app did not open, <a href="' + fallbackUrl + '">tap here to open your prefilled email</a> or email Photoboothbright@gmail.com.',
+              true
+            );
+          } else {
+            setBookingStatus(
+              statusEl,
+              'We could not submit right now. Please email Photoboothbright@gmail.com or call/text 651-420-3713.',
+              true
+            );
           }
         })
         .finally(function () {

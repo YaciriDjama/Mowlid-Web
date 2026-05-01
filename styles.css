@@ -925,6 +925,10 @@ section h2 {
   text-align: center;
 }
 
+.booking-status--error {
+  color: #fca5a5;
+}
+
 /* Reviews */
 .reviews {
   background: var(--dark);
