@@ -218,7 +218,13 @@
         </p>
         <p class="booking-required-note"><span>*</span> Indicates required question</p>
 
-        <form class="booking-form" action="https://formsubmit.co/Photoboothbright@gmail.com" method="post">
+        <form
+          class="booking-form"
+          action="https://formsubmit.co/ajax/Photoboothbright@gmail.com"
+          method="post"
+          data-fallback-endpoint=""
+          data-fallback-email="Photoboothbright@gmail.com"
+        >
           <input type="hidden" name="_subject" value="New Bright Photo Booth booking request" />
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_template" value="table" />
@@ -310,6 +316,7 @@
           </fieldset>
 
           <button type="submit" class="cta cta-primary booking-submit">Submit Booking Request</button>
+          <p id="booking-status" class="booking-status" role="status" aria-live="polite"></p>
         </form>
       </div>
     </section>

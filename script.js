@@ -299,9 +299,40 @@
 
   var bookingForm = document.querySelector('.booking-form');
   if (bookingForm) {
-    bookingForm.addEventListener('submit', function () {
+    function submitBooking(endpoint, formData) {
+      return fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json'
+        }
+      }).then(function (res) {
+        return res.json().catch(function () {
+          return { success: false };
+        });
+      });
+    }
+
+    function buildMailtoFallbackUrl(formData, email) {
+      var lines = ['Booking request fallback submission', ''];
+      formData.forEach(function (value, key) {
+        lines.push(key + ': ' + value);
+      });
+      var subject = 'New Bright Photo Booth booking request (fallback)';
+      var body = lines.join('\n');
+      return 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    }
+
+    bookingForm.addEventListener('submit', function (event) {
+      event.preventDefault();
       var meta = document.getElementById('promo-booking-meta');
       var deadlineMeta = document.getElementById('promo-deadline-meta');
+      var statusEl = document.getElementById('booking-status');
+      var submitBtn = bookingForm.querySelector('.booking-submit');
+      var primaryEndpoint = bookingForm.getAttribute('action') || '';
+      var fallbackEndpoint = (bookingForm.getAttribute('data-fallback-endpoint') || '').trim();
+      var fallbackEmail = (bookingForm.getAttribute('data-fallback-email') || '').trim();
+      var hasFallbackEndpoint = !!fallbackEndpoint && !/YOUR_|REPLACE_ME/i.test(fallbackEndpoint);
       var d = readDeadlineFromStorage();
       var within = d !== null && Date.now() <= d;
       if (meta) meta.value = within ? 'yes' : 'no';
@@ -311,6 +342,60 @@
           sessionStorage.setItem('brightPromo15SubmittedInWindow', String(Date.now()));
         } catch (e2) {}
       }
+
+      var formData = new FormData(bookingForm);
+      if (statusEl) {
+        statusEl.textContent = 'Sending your booking request...';
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
+      }
+
+      submitBooking(primaryEndpoint, formData)
+        .then(function (res) {
+          if (res && res.success) {
+            if (statusEl) {
+              statusEl.textContent = 'Thanks! Your booking request was sent. We will contact you soon.';
+            }
+            bookingForm.reset();
+            return;
+          }
+          throw new Error('Primary submit failed');
+        })
+        .catch(function () {
+          if (!hasFallbackEndpoint) throw new Error('No fallback endpoint');
+          if (statusEl) {
+            statusEl.textContent = 'Primary submit unavailable. Retrying with backup...';
+          }
+          return submitBooking(fallbackEndpoint, formData).then(function (res) {
+            if (res && res.success) {
+              if (statusEl) {
+                statusEl.textContent = 'Sent through backup form service. We will contact you soon.';
+              }
+              bookingForm.reset();
+              return;
+            }
+            throw new Error('Backup submit failed');
+          });
+        })
+        .catch(function () {
+          if (fallbackEmail) {
+            var fallbackUrl = buildMailtoFallbackUrl(formData, fallbackEmail);
+            window.location.href = fallbackUrl;
+            if (statusEl) {
+              statusEl.textContent =
+                'We opened your email app with your booking details. Please send the email to complete your request.';
+            }
+          } else if (statusEl) {
+            statusEl.textContent =
+              'We could not submit right now. Please email Photoboothbright@gmail.com or call/text 651-420-3713.';
+          }
+        })
+        .finally(function () {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+          }
+        });
     });
   }
 

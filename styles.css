@@ -913,6 +913,18 @@ section h2 {
   cursor: pointer;
 }
 
+.booking-submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.booking-status {
+  margin-top: 0.9rem;
+  min-height: 1.25rem;
+  color: rgba(245, 240, 235, 0.92);
+  text-align: center;
+}
+
 /* Reviews */
 .reviews {
   background: var(--dark);
