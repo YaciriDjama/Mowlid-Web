@@ -111,6 +111,23 @@
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function selectBookingRadio(name, value) {
+    if (!value) return;
+    var inputs = document.querySelectorAll('.booking-form input[name="' + name + '"]');
+    inputs.forEach(function (input) {
+      if (input.value === value) {
+        input.checked = true;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  }
+
+  function applyBookingPrefill(trigger) {
+    if (!trigger) return;
+    selectBookingRadio('event_type', trigger.getAttribute('data-prefill-event-type'));
+    selectBookingRadio('package', trigger.getAttribute('data-prefill-package'));
+  }
+
   function initBookingReveal() {
     var bookingSection = document.getElementById('booking');
     if (!bookingSection) return;
@@ -123,6 +140,7 @@
       a.addEventListener('click', function (e) {
         e.preventDefault();
         revealBooking();
+        applyBookingPrefill(a);
         if (window.history.replaceState) {
           window.history.replaceState(null, '', '#booking');
         } else {
