@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bright Photo Booth | Events & Parties</title>
+  <meta name="description" content="Bright Photo Booth offers premium photo booth rentals for weddings, parties, graduations, and corporate events across Greater Minneapolis — unlimited prints, props, and digital galleries." />
+  <meta name="theme-color" content="#0d0d12" />
+  <meta property="og:title" content="Bright Photo Booth | Events & Parties" />
+  <meta property="og:description" content="Premium photo booth rentals for weddings, parties, and events in Greater Minneapolis — unlimited prints, props, and digital galleries." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yaciridjama.github.io/Mowlid-Web/" />
   <script>
     (function () {
       if (location.protocol === 'file:') return;
@@ -198,8 +204,8 @@
               <li>Digital gallery</li>
             </ul>
             <div class="pricing-actions">
-              <a href="#booking" class="cta cta-secondary pricing-cta" data-prefill-package="Verde Digital">Book Digital</a>
-              <a href="#booking" class="cta cta-secondary pricing-cta" data-prefill-package="Verde Printed">Book Printed</a>
+              <a href="#booking" class="cta cta-secondary pricing-cta" data-prefill-package="Parties &amp; Celebrations — Digital ($400)">Book Digital</a>
+              <a href="#booking" class="cta cta-secondary pricing-cta" data-prefill-package="Parties &amp; Celebrations — Printed ($500)">Book Printed</a>
             </div>
           </article>
           <article class="pricing-card pricing-card--feature">
@@ -284,7 +290,7 @@
           class="booking-form"
           action=""
           method="post"
-          data-primary-endpoint="https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ID"
+          data-primary-endpoint="https://formspree.io/f/xldbveby"
           data-fallback-endpoint=""
           data-fallback-email="Photoboothbright@gmail.com"
         >
@@ -316,7 +322,7 @@
             <div class="package-highlight">
               <p class="package-title">Introducing VERDE</p>
               <p class="package-subtitle">Best for weddings, galas, and high-energy events.</p>
-              <p class="package-includes-label">Includes: Everything from Salsa Booth + More</p>
+              <p class="package-includes-label">Includes everything you need for a standout event:</p>
               <ul class="package-list">
                 <li>Premium Backdrop</li>
                 <li>Unlimited Prints (2x6 or 4x6)</li>
@@ -330,9 +336,10 @@
               </ul>
               <p class="package-price">4 Hours - $550 Digital / $650 Printed</p>
             </div>
-            <label><input type="radio" name="package" value="Captionless Image" required /> Captionless Image</label>
-            <label><input type="radio" name="package" value="Verde Digital" /> Verde Digital</label>
-            <label><input type="radio" name="package" value="Verde Printed" /> Verde Printed (Includes Digital)</label>
+            <label><input type="radio" name="package" value="Parties &amp; Celebrations — Digital ($400)" required /> Parties &amp; Celebrations — Digital ($400)</label>
+            <label><input type="radio" name="package" value="Parties &amp; Celebrations — Printed ($500)" /> Parties &amp; Celebrations — Printed ($500)</label>
+            <label><input type="radio" name="package" value="Verde Digital" /> Verde Digital ($550)</label>
+            <label><input type="radio" name="package" value="Verde Printed" /> Verde Printed ($650, includes digital)</label>
           </fieldset>
 
           <label for="booking-event-date">Date of event <span>*</span></label>
@@ -446,13 +453,37 @@
             <span class="contact-value">651-420-3713</span>
           </a>
           <a href="https://www.instagram.com/brightphotoboothco/" class="contact-card" target="_blank" rel="noopener noreferrer">
-            <span class="contact-icon" aria-hidden="true">
+            <span class="contact-icon contact-icon--brand" aria-hidden="true">
               <svg viewBox="0 0 24 24" focusable="false">
-                <path d="M7.5 3.8h9A3.7 3.7 0 0 1 20.2 7.5v9a3.7 3.7 0 0 1-3.7 3.7h-9A3.7 3.7 0 0 1 3.8 16.5v-9A3.7 3.7 0 0 1 7.5 3.8Zm0 1.8A2 2 0 0 0 5.6 7.5v9A2 2 0 0 0 7.5 18.4h9a2 2 0 0 0 1.9-1.9v-9a2 2 0 0 0-1.9-1.9h-9Zm4.5 3A3.9 3.9 0 1 1 8.1 12 3.9 3.9 0 0 1 12 8.6Zm0 1.8A2.1 2.1 0 1 0 14.1 12 2.1 2.1 0 1 0 12 10.4Zm4.9-3.2a.9.9 0 1 1-.9.9.9.9 0 0 1 .9-.9Z"/>
+                <defs>
+                  <radialGradient id="igGrad" cx="30%" cy="107%" r="135%">
+                    <stop offset="0%" stop-color="#fdf497" />
+                    <stop offset="5%" stop-color="#fdf497" />
+                    <stop offset="45%" stop-color="#fd5949" />
+                    <stop offset="60%" stop-color="#d6249f" />
+                    <stop offset="90%" stop-color="#285aeb" />
+                  </radialGradient>
+                </defs>
+                <rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGrad)" />
+                <rect x="6" y="6" width="12" height="12" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6" />
+                <circle cx="12" cy="12" r="3.2" fill="none" stroke="#fff" stroke-width="1.6" />
+                <circle cx="16.2" cy="7.8" r="1.05" fill="#fff" />
               </svg>
             </span>
             <span class="contact-label">Instagram</span>
             <span class="contact-value">@brightphotoboothco</span>
+          </a>
+          <a href="https://www.tiktok.com/@brightphotoboothmn?lang=en" class="contact-card" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon contact-icon--brand" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <rect x="1" y="1" width="22" height="22" rx="6" fill="#fff" />
+                <path fill="#25f4ee" d="M15.9 3.5c.27 1.9 1.45 3.4 3.3 3.9.38.1.77.16 1.2.18v2.5c-1.55 0-3-.48-4.25-1.32v5.9a5.45 5.45 0 1 1-5.45-5.45c.28 0 .56.02.83.07v2.62a2.85 2.85 0 1 0 1.97 2.71V3.5h2.4Z" />
+                <path fill="#fe2c55" d="M17.1 3.5c.27 1.9 1.45 3.4 3.3 3.9.38.1.77.16 1.2.18v2.5c-1.55 0-3-.48-4.25-1.32v5.9a5.45 5.45 0 1 1-5.45-5.45c.28 0 .56.02.83.07v2.62a2.85 2.85 0 1 0 1.97 2.71V3.5h2.4Z" />
+                <path fill="#010101" d="M16.5 3.5c.27 1.9 1.45 3.4 3.3 3.9.38.1.77.16 1.2.18v2.5c-1.55 0-3-.48-4.25-1.32v5.9a5.45 5.45 0 1 1-5.45-5.45c.28 0 .56.02.83.07v2.62a2.85 2.85 0 1 0 1.97 2.71V3.5h2.4Z" />
+              </svg>
+            </span>
+            <span class="contact-label">TikTok</span>
+            <span class="contact-value">@brightphotoboothmn</span>
           </a>
         </div>
         <p class="contact-note">We're happy to answer questions and give you a quote-no obligation.</p>
@@ -469,6 +500,8 @@
         <a href="tel:+16514203713">651-420-3713</a>
         <span class="sep">&middot;</span>
         <a href="https://www.instagram.com/brightphotoboothco/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <span class="sep">&middot;</span>
+        <a href="https://www.tiktok.com/@brightphotoboothmn?lang=en" target="_blank" rel="noopener noreferrer">TikTok</a>
       </p>
       <p class="footer-copy">&copy; <span id="year"></span> Bright Photo Booth. All rights reserved.</p>
       <p class="footer-copy">Based in Greater Minneapolis, Minnesota.</p>
