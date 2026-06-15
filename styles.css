@@ -250,6 +250,11 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
+/* Override .nav-links a color so the CTA text stays white */
+.nav-links a.book-dropdown__cta {
+  color: var(--white);
+}
+
 .book-dropdown__divider {
   height: 1px;
   margin: 1.1rem 0;
@@ -1033,6 +1038,8 @@ section h2 {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.6rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .booking-form label,
@@ -1057,6 +1064,8 @@ section h2 {
   padding: 0.75rem 0.85rem;
   font: inherit;
   margin-bottom: 1.25rem;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .booking-form textarea {
