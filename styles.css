@@ -46,7 +46,7 @@ body {
 
 /* Header */
 .header {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -582,8 +582,9 @@ section h2 {
 /* Scroll reveal */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.95s ease, transform 0.95s ease;
+  transform: translateY(44px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.is-visible {
@@ -1768,12 +1769,28 @@ section h2 {
     width: 80%;
     max-width: 300px;
     height: 100vh;
-    background: white;
+    background: var(--cream);
     flex-direction: column;
     padding: 5rem 2rem 2rem;
     gap: 1.5rem;
     box-shadow: -10px 0 30px rgba(28, 43, 74, 0.1);
     transition: right var(--transition);
+    overflow-y: auto;
+  }
+
+  .nav-links a {
+    color: var(--text);
+  }
+
+  .book-dropdown__panel {
+    margin-top: 0.5rem;
+  }
+
+  .book-dropdown__surface {
+    background: var(--white);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
   }
 
   .nav-links.active {
@@ -1803,9 +1820,5 @@ section h2 {
   .book-dropdown__trigger {
     width: 100%;
     justify-content: center;
-  }
-
-  .book-dropdown__panel {
-    margin-top: 0.5rem;
   }
 }

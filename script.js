@@ -579,9 +579,37 @@
     return;
   }
 
+  // Containers whose direct .reveal children should animate in a staggered sequence
+  var staggerGroups = ['features', 'events-grid', 'pricing-grid', 'reviews-grid'];
+
+  function staggerIndex(el) {
+    var parent = el.parentElement;
+    if (!parent) return 0;
+    var isGroup = staggerGroups.some(function (cls) {
+      return parent.classList.contains(cls);
+    });
+    if (!isGroup) return 0;
+    var idx = 0;
+    var n = 0;
+    for (var i = 0; i < parent.children.length; i++) {
+      var child = parent.children[i];
+      if (child.classList && child.classList.contains('reveal')) {
+        if (child === el) {
+          idx = n;
+          break;
+        }
+        n++;
+      }
+    }
+    return idx;
+  }
+
   var observer = new IntersectionObserver(function (entries, obs) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
+        // Cap the stagger so cards further down a grid don't feel laggy
+        var step = Math.min(staggerIndex(entry.target), 5);
+        entry.target.style.transitionDelay = (step * 0.1) + 's';
         entry.target.classList.add('is-visible');
         obs.unobserve(entry.target);
       }
