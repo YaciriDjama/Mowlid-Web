@@ -554,3 +554,41 @@
   goTo(0);
   startAutoplay();
 })();
+
+// FAQ accordion + scroll reveal (independent of the carousel block above)
+(function () {
+  'use strict';
+
+  var faqQuestions = document.querySelectorAll('.faq-question');
+  faqQuestions.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item');
+      if (!item) return;
+      var isOpen = item.classList.toggle('faq-item--open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  });
+
+  var revealEls = document.querySelectorAll('.reveal');
+  if (!revealEls.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) {
+      el.classList.add('is-visible');
+    });
+    return;
+  }
+
+  var observer = new IntersectionObserver(function (entries, obs) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(function (el) {
+    observer.observe(el);
+  });
+})();
