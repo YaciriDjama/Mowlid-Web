@@ -1765,7 +1765,8 @@ section h2 {
   }
 
   /* Reduce clutter in the mobile Book now dropdown */
-  .book-dropdown__kicker {
+  .book-dropdown__kicker,
+  .book-dropdown__title {
     display: none;
   }
 
