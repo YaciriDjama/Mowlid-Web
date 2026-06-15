@@ -43,6 +43,13 @@
         closeMobileNav();
       });
     });
+
+    // Tap outside the open mobile menu (or toggle) closes it
+    document.addEventListener('click', function (e) {
+      if (!navLinks.classList.contains('active')) return;
+      if (navLinks.contains(e.target) || toggle.contains(e.target)) return;
+      closeMobileNav();
+    });
   }
 
   if (bookDropdown && bookBtn && bookPanel) {

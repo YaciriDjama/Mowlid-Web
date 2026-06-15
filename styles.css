@@ -1760,6 +1760,13 @@ section h2 {
 @media (max-width: 768px) {
   .nav-toggle {
     display: flex;
+    position: relative;
+    z-index: 1001;
+  }
+
+  /* Reduce clutter in the mobile Book now dropdown */
+  .book-dropdown__kicker {
+    display: none;
   }
 
   .nav-links {
@@ -1776,6 +1783,7 @@ section h2 {
     box-shadow: -10px 0 30px rgba(28, 43, 74, 0.1);
     transition: right var(--transition);
     overflow-y: auto;
+    z-index: 1000;
   }
 
   .nav-links a {
